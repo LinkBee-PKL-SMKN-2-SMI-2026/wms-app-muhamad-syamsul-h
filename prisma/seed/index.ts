@@ -48,7 +48,7 @@ async function main() {
       email: 'admin@gmail.com',
       password: bcryptpw,
       role: 'ADMIN',
-      IsActive: true,
+      isActive: true,
     },
   })
 
