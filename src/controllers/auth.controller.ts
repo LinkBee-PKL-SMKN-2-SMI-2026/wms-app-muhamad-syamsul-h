@@ -1,8 +1,8 @@
-import {type Response } from 'express';
+import { type Response } from 'express';
 import bcrypt from 'bcrypt';
 import { PrismaClient } from '../generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { catchAsync } from '../utils/catchAsync'; 
+import { catchAsync } from '../utils/catchAsync';
 import { AppError } from '../utils/AppError';
 import { logger } from '../utils/logger';
 import { generateAccessToken, generateRefreshToken } from '../utils/jwt';
