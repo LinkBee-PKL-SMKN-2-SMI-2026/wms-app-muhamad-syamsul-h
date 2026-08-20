@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import {
-    CreateLocationSchema,
-    GetAllLocationSchema,
-    GetLocationByIdSchema,
-    UpdateLocationSchema,
-    DeleteLocationSchema,
+  CreateLocationSchema,
+  GetAllLocationSchema,
+  GetLocationByIdSchema,
+  UpdateLocationSchema,
+  DeleteLocationSchema,
 } from '../validations/location.validation';
 
 export type CreateLocationDTO = z.infer<typeof CreateLocationSchema>;

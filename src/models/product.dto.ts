@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import {
-    CreateProductSchema,
-    GetAllProductSchema,
-    GetProductByIdSchema,
-    UpdateProductSchema,
-    DeleteProductSchema,
+  CreateProductSchema,
+  GetAllProductSchema,
+  GetProductByIdSchema,
+  UpdateProductSchema,
+  DeleteProductSchema,
 } from '../validations/product.validation';
 
 export type CreateProductDTO = z.infer<typeof CreateProductSchema>;

@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import {
-    CreateCategorySchema,
-    GetAllCategorySchema,
-    GetCategoryByIdSchema,
-    UpdateCategorySchema,
-    DeleteCategorySchema,
+  CreateCategorySchema,
+  GetAllCategorySchema,
+  GetCategoryByIdSchema,
+  UpdateCategorySchema,
+  DeleteCategorySchema,
 } from '../validations/category.validation';
 
 export type CreateCategoryDTO = z.infer<typeof CreateCategorySchema>;
