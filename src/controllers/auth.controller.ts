@@ -8,6 +8,7 @@ import { logger } from '../utils/logger';
 import { generateAccessToken, generateRefreshToken } from '../utils/jwt';
 import { type AuthRequest, type TokenPayload } from '../models/auth.model';
 import { type RegisterRequest, type LoginRequest } from '../models/auth.dto';
+import { logActivity } from '../services/activity-log.service';
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -30,8 +31,9 @@ export const register = catchAsync(async (req: AuthRequest, res: Response) => {
     },
   });
 
-  // Mencatat aktivitas registrasi
+
   logger.info(`User registered successfully: ${user.email}`);
+  logActivity({ userId: user.id, action: 'CREATE', entity: 'Users', entityId: user.id });
 
   const payload: TokenPayload = { userId: user.id, email: user.email };
   const accessToken = generateAccessToken(payload);
@@ -62,7 +64,7 @@ export const login = catchAsync(async (req: AuthRequest, res: Response) => {
 
   // Mencatat aktivitas login
   logger.info(`User logged in successfully: ${user.email}`);
-
+  logActivity({ userId: user.id, action: 'LOGIN', entity: 'Users' });
   const payload: TokenPayload = { userId: user.id, email: user.email };
   const accessToken = generateAccessToken(payload);
   const refreshToken = generateRefreshToken(payload);
