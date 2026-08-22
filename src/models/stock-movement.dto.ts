@@ -1,10 +1,9 @@
 import type { z } from 'zod';
 import type {
-    CreateInboundSchema,
-    CreateOutboundSchema,
-    GetMovementHistorySchema,
+  CreateInboundSchema,
+  CreateOutboundSchema,
+  GetMovementHistorySchema,
 } from '../validations/stock-movement.validation';
-
 
 export type CreateInboundDTO = z.infer<typeof CreateInboundSchema>['body'];
 

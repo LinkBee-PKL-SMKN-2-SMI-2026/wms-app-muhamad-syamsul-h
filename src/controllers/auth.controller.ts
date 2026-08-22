@@ -31,7 +31,6 @@ export const register = catchAsync(async (req: AuthRequest, res: Response) => {
     },
   });
 
-
   logger.info(`User registered successfully: ${user.email}`);
   logActivity({ userId: user.id, action: 'CREATE', entity: 'Users', entityId: user.id });
 

@@ -5,9 +5,9 @@ import { Pool } from 'pg';
 import { AppError } from '../utils/AppError';
 import type { AuthRequest } from '../models/auth.model';
 import type {
-    CreateInboundDTO,
-    CreateOutboundDTO,
-    GetMovementHistoryDTO,
+  CreateInboundDTO,
+  CreateOutboundDTO,
+  GetMovementHistoryDTO,
 } from '../models/stock-movement.dto';
 import { logActivity } from '../services/activity-log.service';
 
@@ -16,9 +16,9 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 export const createInbound = async (
-    req: AuthRequest,
-    res: Response,
-    next: NextFunction
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
 ): Promise<void> => {
   try {
     const { productId, quantity, notes } = req.body as CreateInboundDTO;
@@ -48,12 +48,12 @@ export const createInbound = async (
       return { movement, updatedProduct };
     });
 
-    logActivity({ 
-      userId, 
-      action: 'CREATE', 
-      entity: 'Stock_Movements', 
-      entityId: result.movement.id, 
-      detail: { type: 'INBOUND', productId, quantity } 
+    logActivity({
+      userId,
+      action: 'CREATE',
+      entity: 'Stock_Movements',
+      entityId: result.movement.id,
+      detail: { type: 'INBOUND', productId, quantity },
     });
 
     res.status(201).json({
@@ -69,11 +69,11 @@ export const createInbound = async (
 export const createOutbound = async (
   req: AuthRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     const { productId, quantity, notes } = req.body as CreateOutboundDTO;
-    
+
     const userPayload = req.user as unknown as Record<string, unknown>;
     const userId = (req.user?.userId || userPayload?.id) as string;
 
@@ -112,12 +112,12 @@ export const createOutbound = async (
       return { movement, updatedProduct };
     });
 
-    logActivity({ 
-      userId, 
-      action: 'CREATE', 
-      entity: 'Stock_Movements', 
-      entityId: result.movement.id, 
-      detail: { type: 'OUTBOUND', productId, quantity } 
+    logActivity({
+      userId,
+      action: 'CREATE',
+      entity: 'Stock_Movements',
+      entityId: result.movement.id,
+      detail: { type: 'OUTBOUND', productId, quantity },
     });
 
     res.status(201).json({
@@ -131,13 +131,13 @@ export const createOutbound = async (
 };
 
 export const getMovementHistory = async (
-    req: AuthRequest,
-    res: Response,
-    next: NextFunction
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
 ): Promise<void> => {
   try {
     const query = req.query as unknown as GetMovementHistoryDTO;
-    
+
     const page = Number(query.page) || 1;
     const limit = Number(query.limit) || 10;
     const skip = (page - 1) * limit;
@@ -160,32 +160,32 @@ export const getMovementHistory = async (
     }
 
     const [movements, totalData] = await prisma.$transaction([
-        prisma.stock_Movements.findMany({
-          where: whereCondition,
-          skip,
-          take: limit,
-          orderBy: { createdAt: 'desc' },
-          select: {
-            id: true,
-            type: true,
-            quantity: true,
-            notes: true,
-            createdAt: true,
-            product: { 
-              select: {
-                name: true,
-                sku: true,
-              },
-            },
-            user: { 
-              select: {
-                name: true,
-              },
+      prisma.stock_Movements.findMany({
+        where: whereCondition,
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          type: true,
+          quantity: true,
+          notes: true,
+          createdAt: true,
+          product: {
+            select: {
+              name: true,
+              sku: true,
             },
           },
-        }),
-        prisma.stock_Movements.count({ where: whereCondition }),
-      ]);
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      }),
+      prisma.stock_Movements.count({ where: whereCondition }),
+    ]);
 
     const totalPages = Math.ceil(totalData / limit);
 
