@@ -9,7 +9,8 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
 export const getActivityLogs = catchAsync(async (req: AuthRequest, res: Response) => {
-  const { page, limit, userId, action, entity, startDate, endDate } = req.query as unknown as GetActivityLogsQuery;
+  const { page, limit, userId, action, entity, startDate, endDate } =
+    req.query as unknown as GetActivityLogsQuery;
   const where: Record<string, unknown> = {};
 
   if (userId) {
